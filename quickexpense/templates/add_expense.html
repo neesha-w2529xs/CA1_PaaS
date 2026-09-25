@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Add Expense - QuickExpense{% endblock %}
+{% block content %}
+<div class="form-card">
+    <h2>Add an Expense</h2>
+    <form method="POST">
+        <label for="amount">Amount (AED)</label>
+        <input type="number" step="0.01" min="0" id="amount" name="amount" required>
+
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            {% for c in categories %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" value="{{ today }}">
+
+        <label for="note">Note (optional)</label>
+        <input type="text" id="note" name="note" placeholder="e.g. Lunch with friends">
+
+        <button type="submit" class="btn btn-primary">Save Expense</button>
+    </form>
+</div>
+{% endblock %}

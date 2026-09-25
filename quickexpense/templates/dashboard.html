@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - QuickExpense{% endblock %}
+{% block content %}
+<h2>Your Dashboard</h2>
+
+<div class="summary-row">
+    <div class="summary-card">
+        <span class="summary-label">Total Spent</span>
+        <span class="summary-value">AED {{ '%.2f'|format(total) }}</span>
+    </div>
+    <div class="summary-card">
+        <span class="summary-label">Number of Expenses</span>
+        <span class="summary-value">{{ expenses|length }}</span>
+    </div>
+</div>
+
+{% if chart_labels %}
+<div class="chart-card">
+    <div class="chart-wrapper">
+        <canvas id="categoryChart"></canvas>
+    </div>
+</div>
+{% endif %}
+
+<div class="table-card">
+    <div class="table-header">
+        <h3>Recent Expenses</h3>
+        <a class="btn btn-primary" href="{{ url_for('add_expense') }}">+ Add Expense</a>
+    </div>
+
+    {% if expenses %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Note</th>
+                <th>Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in expenses %}
+            <tr>
+                <td>{{ e.date }}</td>
+                <td><span class="category-pill">{{ e.category }}</span></td>
+                <td>{{ e.note or '-' }}</td>
+                <td>AED {{ '%.2f'|format(e.amount) }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_expense', expense_id=e.id) }}"
+                          onsubmit="return confirm('Delete this expense?');">
+                        <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No expenses yet. <a href="{{ url_for('add_expense') }}">Add your first one</a>.</p>
+    {% endif %}
+</div>
+
+{% if chart_labels %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('categoryChart');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ chart_labels|tojson }},
+            datasets: [{
+                data: {{ chart_values|tojson }},
+                backgroundColor: ['#6C63FF', '#FF6B6B', '#4ECDC4', '#FFD93D', '#95E1D3', '#F38181', '#AAAAAA']
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'right' } }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

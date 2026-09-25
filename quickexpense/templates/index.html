@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}QuickExpense - Track your spending{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Take control of your everyday spending</h1>
+    <p>QuickExpense is a simple, web-based expense tracker. Create a free
+       account, log your daily expenses, and instantly see where your
+       money goes &mdash; all from your browser, on any device.</p>
+    <div class="hero-buttons">
+        <a class="btn btn-primary" href="{{ url_for('register') }}">Get Started</a>
+        <a class="btn btn-secondary" href="{{ url_for('login') }}">Login</a>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <h3>📊 Visual Summary</h3>
+        <p>See a breakdown of your spending by category at a glance.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🔒 Private &amp; Secure</h3>
+        <p>Every account's data is kept separate. Only you can see your expenses.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🌐 Access Anywhere</h3>
+        <p>No installation needed. Just open the app in any web browser.</p>
+    </div>
+</div>
+{% endblock %}
